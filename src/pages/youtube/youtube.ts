@@ -11,10 +11,10 @@ import 'rxjs/add/operator/map';
 })
 export class YoutubePage {
 
-  channelID: string = 'UC7Nfr13PyP84jWgU5FS9LGg';
+  channelID: string = 'xxxxxxxxxxxxxxxxxxxxxxxxxx';
   maxResults: string = '50';
   pageToken: string;
-  googleToken: string = 'AIzaSyDntBVqRDllynW9o0EwKCAi6LGMva9Ric8';
+  googleToken: string = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx';
   //searchQuery: string = 'Pst. David Olusegun';
   posts: any = [];
   no_result: boolean = false;
