@@ -1,9 +1,10 @@
-<ion-header class="detailHeader" id="scroll-opacity">
+<ion-header parallax [fadeTitle]="true" imageUrl="{{data.thumbnail_images.medium_large.url}}">
+<!-- <ion-header parallax class="detailHeader" id="scroll-opacity"> -->
   <ion-navbar color="primary" *ngIf="data" [hideBackButton]=true>
     <button ion-button menuToggle class="hamburger">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <!-- <ion-title>{{wp.setTitle(data.title)}}</ion-title> -->
+    <ion-title>{{wp.setTitle(data.title)}}</ion-title>
   </ion-navbar>
 </ion-header>
 

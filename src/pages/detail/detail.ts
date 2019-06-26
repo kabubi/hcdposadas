@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, PopoverController, LoadingControll
 import { PopoverContentComponent } from '../../components/popover-content/popover-content';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { WpProvider } from '../../providers/wp/wp';
+import { VarGlobalProvider } from '../../providers/var-global/var-global';
 
 declare var moment: any;
 
@@ -17,12 +18,52 @@ export class DetailPage {
   data: any;
   star: any;
   loading: Loading;
+  idNovidad: number;
+  indice: any;
+  achei: number;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public popoverCtrl: PopoverController, private toastCtrl: ToastController, public loadingCtrl: LoadingController, private socialSharing: SocialSharing, public wp: WpProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, 
+    public popoverCtrl: PopoverController, private toastCtrl: ToastController, 
+    public loadingCtrl: LoadingController, private socialSharing: SocialSharing, 
+    public wp: WpProvider, public GVP: VarGlobalProvider,) {
+
+    this.idNovidad = this.navParams.get('IDNovidad');
+
+    if (this.idNovidad > 0) //se vier do Onesignal e tiver o ID > 0, vai pesquisar no array de noticias pra achar o Index 
+      this.showNew(this.GVP.news,this.idNovidad);
+      else
+      this.data = this.navParams.get('data'); // caso contrario pega o click da home
   }
 
-  ionViewDidLoad() {
-    this.data = this.navParams.get('data');
+  showNew(dados, idNovidad) {   
+
+    if (this.indice >= 0)
+      this.achei = this.indice //se achar a noticia
+    else
+      this.achei = dados.findIndex(obj => { // se nao ele procura e retorna o ID
+        return obj.id == idNovidad;
+      });
+
+   //  console.log(this.achei);
+     
+    if (this.achei < 0) {  // se não existi a noticia ele busca novamente na interne / API 
+      
+        this.wp.getPosts(1).then(data => {        
+          this.GVP.news = data['posts']; // atualiza a lita de news global
+          this.data =  this.GVP.news[this.achei];
+        }).catch(err => {
+           this.navCtrl.pop(); // se tiver erro retorna para tela principal
+        }); 
+      
+
+    }
+    else
+    this.data = dados[this.achei];// this.VerViewDidEnter(dados);
+  }
+
+  ionViewDidLoad() { 
+    console.log('Aqui Detail news ',this.GVP.news);
+    
     console.log(this.data);
     this.checkBookmark();
     console.log(this.star);
@@ -30,7 +71,7 @@ export class DetailPage {
   }
 
   sharePost(title, url) {
-    this.socialSharing.share('Leer Noticias: ' + title + ' Using app ' + App.AppName +' \nSource: ', '', '', url).then(data => {
+    this.socialSharing.share('Leer Noticias: ' + title + ' Usando la app ' + App.AppName +' \nSource: ', '', '', url).then(data => {
 
     }).catch(err => {
 
@@ -170,4 +211,5 @@ export class DetailPage {
     });
     toast.present();
   }
+
 }

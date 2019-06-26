@@ -12,12 +12,12 @@ import { Network } from '@ionic-native/network';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { OneSignal } from '@ionic-native/onesignal';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { VarGlobalProvider } from '../providers/var-global/var-global';
 
 @NgModule({
   declarations: [
     MyApp,
-    PopoverContentComponent,
-    // ParallaxDirective
+    PopoverContentComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +38,8 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
     SocialSharing,
     OneSignal,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    WpProvider
+    WpProvider,
+    VarGlobalProvider
   ]
 })
 export class AppModule {}
